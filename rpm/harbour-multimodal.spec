@@ -45,6 +45,8 @@ Screenshots:
  - https://raw.githubusercontent.com/poetaster/harbour-musicex/master/screenshot-1.png
  - https://raw.githubusercontent.com/poetaster/harbour-musicex/master/screenshot-2.png
  - https://raw.githubusercontent.com/poetaster/harbour-musicex/master/screenshot-3.png
+ - https://raw.githubusercontent.com/poetaster/harbour-musicex/master/screenshot-4.png
+ - https://raw.githubusercontent.com/poetaster/harbour-musicex/master/screenshot-5.png
 %endif
 
 %prep
