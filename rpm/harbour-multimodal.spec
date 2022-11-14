@@ -47,6 +47,8 @@ Screenshots:
  - https://raw.githubusercontent.com/poetaster/musicex/master/screenshot-3.png
  - https://raw.githubusercontent.com/poetaster/musicex/master/screenshot-4.png
  - https://raw.githubusercontent.com/poetaster/musicex/master/screenshot-5.png
+Url:
+  Homepage: https://openrepos.net/content/anarchyintheuk/music-explorer
 %endif
 
 %prep
