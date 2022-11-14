@@ -20,7 +20,7 @@ DISTFILES += qml/harbour-musicex.qml \
     src/*.py \
     src/pytube/*.py \
     src/pytube/contrib/*.py \
-    rpm/harbour-musicex.spec \
+    rpm/*.spec \
     translations/*.ts \
     harbour-musicex.desktop
 
