@@ -42,11 +42,11 @@ Custom:
  - Repo: https://github.com/poetaster/musicex
 Icon: https://github.com/poetaster/musicex/raw/main/icons/128x128/harbour-musicex.png
 Screenshots:
- - https://raw.githubusercontent.com/poetaster/musicex/master/screenshot-1.png
- - https://raw.githubusercontent.com/poetaster/musicex/master/screenshot-2.png
- - https://raw.githubusercontent.com/poetaster/musicex/master/screenshot-3.png
- - https://raw.githubusercontent.com/poetaster/musicex/master/screenshot-4.png
- - https://raw.githubusercontent.com/poetaster/musicex/master/screenshot-5.png
+ - https://raw.githubusercontent.com/poetaster/musicex/main/screenshot-1.png
+ - https://raw.githubusercontent.com/poetaster/musicex/main/screenshot-2.png
+ - https://raw.githubusercontent.com/poetaster/musicex/main/screenshot-3.png
+ - https://raw.githubusercontent.com/poetaster/musicex/main/screenshot-4.png
+ - https://raw.githubusercontent.com/poetaster/musicex/main/screenshot-5.png
 Url:
   Homepage: https://openrepos.net/content/anarchyintheuk/music-explorer
 %endif
