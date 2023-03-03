@@ -83,6 +83,14 @@ desktop-file-install --delete-original       \
   --dir %{buildroot}%{_datadir}/applications             \
    %{buildroot}%{_datadir}/applications/*.desktop
 
+# >> install post
+#mkdir -p %{buildroot}%{_datadir}/%{name}/lib
+%if "%{sailfishos_version}" > "40200"
+        cp %{buildroot}%{_datadir}/%{name}/qml/pages/WebViewPage_4.qml \
+           %{buildroot}%{_datadir}/%{name}/qml/pages/WebViewPage.qml 
+%else
+%endif
+
 %files
 %defattr(-,root,root,-)
 %defattr(0644,root,root,-)
