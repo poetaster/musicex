@@ -10,15 +10,15 @@ import pyotherside
 import musicbrainz
 
 class Audiodb:
-  URL_ARTIST_BY_NAME="https://theaudiodb.com/api/v1/json/2/search.php?s={}"
-  URL_ARTIST_BY_ID="https://theaudiodb.com/api/v1/json/2/artist.php?i={}"
+  URL_ARTIST_BY_NAME="https://theaudiodb.com/api/v1/json/2139078587215309723505/search.php?s={}"
+  URL_ARTIST_BY_ID="https://theaudiodb.com/api/v1/json/2139078587215309723505/artist.php?i={}"
   URL_ARTIST_BY_MBID="https://theaudiodb.com/api/v1/json/2139078587215309723505/artist-mb.php?i={}"
-  URL_DISCOGRAPHY_BY_NAME="https://theaudiodb.com/api/v1/json/2/discography.php?s={}"
-  URL_ALBUMS_BY_ARTIST_ID="https://theaudiodb.com/api/v1/json/2/album.php?i={}"
-  URL_ALBUM_BY_ID="https://theaudiodb.com/api/v1/json/2/album.php?m={}"
-  URL_TRACKS_BY_ALBUM_ID="https://theaudiodb.com/api/v1/json/2/track.php?m={}"
-  URL_VIDEOS_BY_ARTIST_ID="https://theaudiodb.com/api/v1/json/2/mvid.php?i={}"
-  URL_TRACK_BY_ID="https://theaudiodb.com/api/v1/json/2/track.php?h={}"
+  URL_DISCOGRAPHY_BY_NAME="https://theaudiodb.com/api/v1/json/2139078587215309723505/discography.php?s={}"
+  URL_ALBUMS_BY_ARTIST_ID="https://theaudiodb.com/api/v1/json/2139078587215309723505/album.php?i={}"
+  URL_ALBUM_BY_ID="https://theaudiodb.com/api/v1/json/2139078587215309723505/album.php?m={}"
+  URL_TRACKS_BY_ALBUM_ID="https://theaudiodb.com/api/v1/json/2139078587215309723505/track.php?m={}"
+  URL_VIDEOS_BY_ARTIST_ID="https://theaudiodb.com/api/v1/json/2139078587215309723505/mvid.php?i={}"
+  URL_TRACK_BY_ID="https://theaudiodb.com/api/v1/json/2139078587215309723505/track.php?h={}"
   URL_ALBUMS_TRENDING="https://theaudiodb.com/api/v1/json/2139078587215309723505/trending.php?country=us&format=albums"
   URL_TRACKS_LOVED="https://theaudiodb.com/api/v1/json/2139078587215309723505/mostloved.php?format=track"
   CACHE_FILE = "audiodb_cache.json"
@@ -384,6 +384,7 @@ class Audiodb:
     self.cache['album_ids_by_artist_id'][str(artist_id)] = album_ids
 
   def get_tracks(self, album_id):
+    tracks_sent = False
     tracks = []
     refresh_cache = False
     track_ids = self.cache_get(album_id, 'track_ids_by_album_id')
@@ -395,17 +396,29 @@ class Audiodb:
           if 'chache_expired' in track:
             refresh_cache = True
 
-    if len(tracks) > 0 and not refresh_cache:
+    if len(tracks) > 0:
+      print('Audiodb get_tracks - sending cached tracks: ', len(tracks))
       pyotherside.send("tracks_details", {'track': tracks})
-      return True
+      tracks_sent = True
+      if not refresh_cache:
+        return True
+    else:
+      print('Audiodb get_tracks - no cached tracks available')
 
+    print('Audiodb get_tracks - requesting tracks')
     result = self.__url_get(self.URL_TRACKS_BY_ALBUM_ID.format(album_id))
     if not result:
       if len(tracks) > 0:
+        print('Audiodb get_tracks - request failed - sending cached tracks: ', len(tracks))
         pyotherside.send("tracks_details", {'track': tracks})
+        tracks_sent = True
         return True
+
+      if not tracks_sent:
+        pyotherside.send("tracks_details", {'track': []})
       return False
 
+    print('Audiodb get_tracks - sending tracks: ', len(result))
     pyotherside.send("tracks_details", result)
     track_ids = self.cache_put_multi('idTrack', 'tracks', result, 'track')
     self.cache['track_ids_by_album_id'][str(album_id)] = track_ids

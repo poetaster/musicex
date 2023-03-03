@@ -204,8 +204,13 @@ class Youtube:
         if not self.check_title(yo.title.lower(), artist.lower(), track.lower()):
           continue
 
-        print('VIDEO primary:', yo.title, ' / ', yo.length, ' / ', yo.thumbnail_url, ' / ', yo.vid_info['videoDetails']['videoId'], ' / ', yo.views)
-        videos.append({'video_id': yo.vid_info['videoDetails']['videoId'], 'title': yo.title, 'length': yo.length, 'views': yo.views, 'thumbnail_url': yo.thumbnail_url})
+        try:
+          print('VIDEO primary:', yo.title, ' / ', yo.length, ' / ', yo.thumbnail_url, ' / ', yo.vid_info['videoDetails']['videoId'], ' / ', yo.views)
+          videos.append({'video_id': yo.vid_info['videoDetails']['videoId'], 'title': yo.title, 'length': yo.length, 'views': yo.views, 'thumbnail_url': yo.thumbnail_url})
+        except Exception as err:
+          print('VIDEO primary error - ignoring video: ', err)
+          continue
+
         pyotherside.send("videos_list", data)
     except Exception as err:
       print('Youtube search_media - error: ', err)
@@ -216,8 +221,13 @@ class Youtube:
     if len(videos) < 2:
       try:
         for yo in so.results:
-          print('VIDEO secondary:', yo.title, ' / ', yo.length, ' / ', yo.thumbnail_url, ' / ', yo.vid_info['videoDetails']['videoId'], ' / ', yo.views)
-          videos.append({'video_id': yo.vid_info['videoDetails']['videoId'], 'title': yo.title, 'length': yo.length, 'views': yo.views, 'thumbnail_url': yo.thumbnail_url})
+          try:
+            print('VIDEO secondary:', yo.title, ' / ', yo.length, ' / ', yo.thumbnail_url, ' / ', yo.vid_info['videoDetails']['videoId'], ' / ', yo.views)
+            videos.append({'video_id': yo.vid_info['videoDetails']['videoId'], 'title': yo.title, 'length': yo.length, 'views': yo.views, 'thumbnail_url': yo.thumbnail_url})
+          except Exception as err:
+            print('VIDEO secondary error - ignoring video: ', err)
+            continue
+
           pyotherside.send("videos_list", data)
       except Exception as err:
         print('Youtube search_media - error: ', err)
@@ -279,39 +289,44 @@ class Youtube:
       if not self.check_title(yo.title.lower(), artist.lower(), track.lower()):
         continue
 
-      if length:
-        if (yo.length > length + 30 or yo.length < length - 10):
-          continue
-      elif yo.length > 2000:
-        continue
-
       score = 0
 
-      if length:
-        if yo.length == length:
+      try:
+        if length:
+          if (yo.length > length + 30 or yo.length < length - 10):
+            continue
+        elif yo.length > 2000:
+          continue
+
+        if length:
+          if yo.length == length:
+            score += 100
+          elif yo.length == length + 1 or  yo.length == length - 1:
+            score += 90
+
+        title_lower = yo.title.lower()
+        if "official lyrics video" in title_lower:
           score += 100
-        elif yo.length == length + 1 or  yo.length == length - 1:
+        elif "official audio" in title_lower:
+          score += 100
+        elif "official music video" in title_lower:
           score += 90
+        elif "official hd video" in title_lower:
+          score += 90
+        elif "(audio)" in title_lower:
+          score += 80
+        elif "(lyrics)" in title_lower:
+          score += 50
 
-      title_lower = yo.title.lower()
-      if "official lyrics video" in title_lower:
-        score += 100
-      elif "official audio" in title_lower:
-        score += 100
-      elif "official music video" in title_lower:
-        score += 90
-      elif "official hd video" in title_lower:
-        score += 90
-      elif "(audio)" in title_lower:
-        score += 80
-      elif "(lyrics)" in title_lower:
-        score += 50
+        if "remix" in title_lower and "remix" not in track.lower():
+          score += -80
+        
+        if "live" in title_lower and "live" not in track.lower():
+          score += -50
 
-      if "remix" in title_lower and "remix" not in track.lower():
-        score += -80
-      
-      if "live" in title_lower and "live" not in track.lower():
-        score += -50
+      except Exception as err:
+        print('find_download_media error - ignoring video: ', err)
+        continue
 
       if score > video_score:
         video = yo

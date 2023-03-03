@@ -7,7 +7,9 @@ Page {
 
   property var artist_data
   property var album_data
+  property var track_data
   property var tracks: []
+  property bool tracks_requested: false
 
   CachedImage {
     id: album_thumb
@@ -104,6 +106,7 @@ Page {
           
           artist_data: album_page.artist_data
           album_data: album_page.album_data
+          tracks_requested: album_page.tracks_requested
         }
       }
     }
@@ -143,6 +146,7 @@ Page {
    
   Component.onCompleted: {
     app.signal_tracks.connect(handle_tracks)
+    tracks_requested = true
     python.get_tracks(album_data.idAlbum)
   }
 
@@ -152,5 +156,6 @@ Page {
 
   function handle_tracks(data) {
     tracks = data
+    tracks_requested = false
   }
 }

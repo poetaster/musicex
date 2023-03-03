@@ -8,7 +8,7 @@ Item {
   property var album_data
   property var local_media_files: []
   property int local_media_files_count: 0
-  
+  property bool tracks_requested
   property var tracks: []
 
   anchors.fill: parent
@@ -29,6 +29,7 @@ Item {
   SilicaListView {
     width: parent.width; 
     height: parent.height
+    id: list_view
 
     model: album_page.tracks
 
@@ -98,6 +99,12 @@ Item {
         local_media_files_count = 0
       }
     }
+  }
+
+  BusyIndicator {
+    size: BusyIndicatorSize.Large
+    anchors.centerIn: list_view
+    running: tracks_requested
   }
   
   Component.onCompleted: {

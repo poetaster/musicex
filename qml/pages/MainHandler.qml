@@ -175,6 +175,11 @@ Item {
     console.log('mpris artist:', player_artist_name)
   }
 
+  onPlayer_artworkChanged: {
+    mpris.metaData.artUrl = player_artwork
+    console.log('mpris artUrl:', player_artwork)
+  }
+
   onPlayer_volumeChanged: {
     main_handler.audio_player.volume = player_volume * track_volume
   }
