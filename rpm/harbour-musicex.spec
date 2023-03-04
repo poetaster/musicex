@@ -1,6 +1,7 @@
 Name:       harbour-musicex
 
 # >> macros
+%define sfos_version  `grep VERSION_ID /etc/sailfish-release | cut -d'=' -f2 | cut -d'.' -f1-2 | sed -e 's/\.//g'`
 # << macros
 
 %{!?qtc_qmake:%define qtc_qmake %qmake}
@@ -83,14 +84,6 @@ desktop-file-install --delete-original       \
   --dir %{buildroot}%{_datadir}/applications             \
    %{buildroot}%{_datadir}/applications/*.desktop
 
-# >> install post
-#mkdir -p %{buildroot}%{_datadir}/%{name}/lib
-%if "%{sailfishos_version}" > "40200"
-        cp %{buildroot}%{_datadir}/%{name}/qml/pages/WebViewPage_4.qml \
-           %{buildroot}%{_datadir}/%{name}/qml/pages/WebViewPage.qml 
-%else
-%endif
-
 %files
 %defattr(-,root,root,-)
 %defattr(0644,root,root,-)
@@ -100,6 +93,11 @@ desktop-file-install --delete-original       \
 # >> files
 # << files
 
+%post
+%if "%{?sfos_version}" > "42"
+        cp %{_datadir}/%{name}/qml/pages/WebViewPage_4.qml %{_datadir}/%{name}/qml/pages/WebViewPage.qml
+%else
+%endif
 %changelog
 * Sat May 29 2021  anarchy_in_the_uk
 - 0.1 r1 release
