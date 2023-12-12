@@ -88,7 +88,7 @@ desktop-file-install --delete-original       \
 %files
 %defattr(-,root,root,-)
 %defattr(0644,root,root,-)
-%{_datadir}/%{name}
+%{_datadir}/%{name}/
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 # >> files
@@ -96,7 +96,7 @@ desktop-file-install --delete-original       \
 
 %post
 %if "%{?sfos_version}" > "42"
-        cp %{_datadir}/%{name}/qml/pages/WebViewPage_4.qml %{_datadir}/%{name}/qml/pages/WebViewPage.qml
+#        cp %{_datadir}/%{name}/qml/pages/WebViewPage_4.qml %{_datadir}/%{name}/qml/pages/WebViewPage.qml
 %else
 %endif
 %changelog
