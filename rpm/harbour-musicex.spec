@@ -1,6 +1,7 @@
 Name:       harbour-musicex
 
 # >> macros
+%define _binary_payload w2.xzdio
 %define sfos_version  `grep VERSION_ID /etc/sailfish-release | cut -d'=' -f2 | cut -d'.' -f1-2 | sed -e 's/\.//g'`
 # << macros
 
@@ -11,7 +12,7 @@ Name:       harbour-musicex
 
 
 Summary:        musicex
-Version:        0.44
+Version:        0.46
 Release:        1
 License:        MIT
 URL:            https://openrepos.net/content/anarchyintheuk/musicex
