@@ -12,7 +12,7 @@ Name:       harbour-musicex
 
 
 Summary:        musicex
-Version:        0.46
+Version:        0.48
 Release:        1
 License:        MIT
 URL:            https://openrepos.net/content/anarchyintheuk/musicex

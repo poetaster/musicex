@@ -4,7 +4,7 @@ import re
 import glob
 import time
 import json
-import pytube
+import pytubefix
 import pyotherside
 
 class Youtube:
@@ -24,7 +24,6 @@ class Youtube:
     except FileExistsError:
       pass
     except Exception as err:
-      console.log('Youtube init - error:', err)
       pyotherside.send("error", "youtube", "init", self.format_error(err))
       return
 
@@ -198,7 +197,7 @@ class Youtube:
       return True
 
     data = {'track_id': track_id, 'videos': videos, 'partial': True}
-    so = pytube.Search(self.MEDIA_SEARCH_FORMAT.format(artist, track))
+    so = pytubefix.Search(self.MEDIA_SEARCH_FORMAT.format(artist, track))
     try:
       for yo in so.results:
         if not self.check_title(yo.title.lower(), artist.lower(), track.lower()):
@@ -247,14 +246,19 @@ class Youtube:
     return len(videos) > 0
     
   def get_audio_stream(self, track_id, video_id):
-    yo = pytube.YouTube(self.VIDEO_URL.format(video_id), on_progress_callback=self.handle_progress, on_complete_callback=self.handle_complete)
+    yo = pytubefix.YouTube(self.VIDEO_URL.format(video_id), on_progress_callback=self.handle_progress, on_complete_callback=self.handle_complete)
     if not yo:
       pyotherside.send("error", "youtube", "get_audio_stream", 'Media not found')
       return None
 
     file_name = self.AUDIO_FILE_NAME.format(track_id, video_id)
-    pyotherside.send("media_download", {'status': 'start', 'file_path': self.audio_download_path, 'file_name': file_name, 'thumbnail_url': yo.thumbnail_url, 'stream': None})
     
+    try:
+      pyotherside.send("media_download", {'status': 'start', 'file_path': self.audio_download_path, 'file_name': file_name, 'thumbnail_url': yo.thumbnail_url, 'stream': None})
+    except Exception as err:
+      pyotherside.send("error", "youtube", "media_download", self.format_error(err))
+      return
+
     stream = None
     for st in yo.streams.filter(only_audio=True):
       codecs = st.parse_codecs()
@@ -278,7 +282,7 @@ class Youtube:
 
     print('find_download_media:', artist, track, track_id, length)
 
-    so = pytube.Search(self.MEDIA_SEARCH_FORMAT.format(artist, track))
+    so = pytubefix.Search(self.MEDIA_SEARCH_FORMAT.format(artist, track))
     print('find_download_media - results:', len(so.results))
     index = 0
 
