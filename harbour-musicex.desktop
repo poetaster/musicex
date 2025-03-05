@@ -5,12 +5,11 @@ Type=Application
 X-Nemo-Application-Type=generic
 Name=Music Explorer
 Icon=harbour-musicex
-Exec=sailfish-qml harbour-musicex
-
-X-Desktop-File-Install-Version=0.26
+Exec=sailjail -p harbour-musicex.desktop /usr/bin/sailfish-qml harbour-musicex
+X-Desktop-File-Install-Version=0.27
 
 [X-Sailjail]
-Permissions=Internet;Audio;Bluetooth;Downloads;MediaIndexing;Music;RemovableMedia;UserDirs;Videos;WebView
+Permissions=Internet;Audio;Bluetooth;Downloads;MediaIndexing;Microphone;Music;NFC;PublicDir;RemovableMedia;UserDirs;Videos;WebView
 OrganizationName=app.qml
 ApplicationName=musicex
 

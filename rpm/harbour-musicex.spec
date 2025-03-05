@@ -12,7 +12,7 @@ Name:       harbour-musicex
 
 
 Summary:        musicex
-Version:        0.48
+Version:        0.49
 Release:        1
 License:        MIT
 URL:            https://openrepos.net/content/anarchyintheuk/musicex
@@ -41,7 +41,7 @@ Categories:
  - Utility
  - News
 DeveloperName: anarchy_in_the_uk
-PackagerName: Mark Washeim (poetaster)
+PackagedBy: Mark Washeim (poetaster)
 Custom:
  - Repo: https://github.com/poetaster/musicex
 Icon: https://github.com/poetaster/musicex/raw/main/icons/128x128/harbour-musicex.png
