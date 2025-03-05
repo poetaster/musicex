@@ -17,7 +17,7 @@ jobs:
         arch: ['aarch64']
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Prepare
       run: docker pull coderus/sailfishos-platform-sdk:$OS_VERSION && mkdir output
@@ -55,7 +55,7 @@ jobs:
           script: |
             return context.payload.ref.replace(/refs\/tags\//, '');
       - name: Create a Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
