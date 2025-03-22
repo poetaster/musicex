@@ -31,7 +31,7 @@ BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  desktop-file-utils
 
 %description
-Public Transit App
+Music Explorer lets you look up information about artists and albums, watch music videos or download and play audio.
 
 %if "%{?vendor}" == "chum"
 PackageName: harbour-musicex
