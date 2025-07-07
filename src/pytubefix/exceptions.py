@@ -25,6 +25,14 @@ class HTMLParseError(PytubeFixError):
 class ExtractError(PytubeFixError):
     """Data extraction based exception."""
 
+class SABRError(PytubeFixError):
+    def __init__(self, msg: str):
+        self.msg = msg
+        super().__init__(self.msg)
+
+    @property
+    def error_string(self):
+        return self.msg
 
 class RegexMatchError(ExtractError):
     """Regex pattern did not return any matches."""
@@ -43,6 +51,15 @@ class RegexMatchError(ExtractError):
         self.caller = caller
         self.pattern = pattern
 
+
+class InterpretationError(PytubeFixError):
+    def __init__(self, js_url: str):
+        self.js_url = js_url
+        super().__init__(self.error_string)
+
+    @property
+    def error_string(self):
+        return f'Error interpreting player js: {self.js_url}'
 
 ### Video Unavailable Errors ###
 # There are really 3 types of errors thrown
